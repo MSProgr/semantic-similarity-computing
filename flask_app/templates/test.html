@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<head>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<title>Réponse</title>
+	</head>
+</head>
+<body class="container">
+	<button class="btn btn-primary">Question : {{question}}
+		<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+	</button>
+	<hr/> 
+	<div class="row">
+		<div class="col-md-8 col-sm-8 col-xs-12">
+			<h5 class="badge badge-warning">Question la plus similaire ! </h5>
+			<div class="jumbotron">
+				<button class="btn btn-danger">{{q_sim}}  {{similarity}}% de similarité</button>
+				<p class="">{{reponse}}</p><br/><br/>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-3 col-xs-12">
+			<h3 class="badge badge-primary">Aidez-nous à l'amélioration du systéme</h3>
+			<fieldset>
+				<legend class="badge badge-primary">
+					Avez-vous une suggestion ?
+				</legend>
+				<hr style="background-color:red;" />
+				<h2 class="btn btn-danger" data-toggle="modal" data-target="#best_question">Réponse invalide</h2>
+				<h2><a class="btn btn-success" href="{{url_for('validate_question',user_q=question,q_sim_index=ind)}}">Réponse valide</a></h2>
+			</fieldset>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="best_question" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">{{question}}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<fieldset>
+						<legend class="badge badge-primary">
+							Nouvelle Réponse
+						</legend>
+						<hr style="background-color:red;" />
+						<form role="form" method="POST" action="{{url_for('new_suggest')}}">
+							{{suggestion.hidden_tag()}}
+							<div class="form-group">
+								{{suggestion.question.label(class="form-control-label")}}                    
+								{{suggestion.question(class="form-control form-control-lg")}}
+							</div>
+							<div class="form-group">
+								{{suggestion.reponse.label(class="form-control-label")}}
+								{% if suggestion.reponse.errors %}
+								{{suggestion.reponse(class="form-control form-control-lg is-invalid")}}
+								<div class="invalid-feedback">
+									{% for error in suggestion.reponse.errors%}
+									<span class="text-danger">{{error}}</span>
+									{% endfor %}
+								</div>
+								{% else %}
+								{{suggestion.reponse(class="form-control form-control-lg")}}
+								{% endif %}
+							</div>
+							<div class="form-group"  style="margin-bottom: 5px;">
+								{{suggestion.categorie.label(class="form-control-label")}}
+								{{suggestion.categorie(class="form-control form-control-label")}}
+							</div>
+							<div class="form-group">
+								{{suggestion.submit(class="btn btn-outline-dark mt-3")}}
+							</div>
+						</form>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+</body>
+</html>
